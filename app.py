@@ -703,7 +703,7 @@ def main():
     
     if view == "🔍 પ્રશ્ન પૂછો":
         st.title("🕉️ ગીતા અધ્યાય 1 – સંપૂર્ણ જ્ઞાન ગ્રાફ")
-        st.markdown("**પ્રશ્ન ગુજરાતીમાં લખો – હવે કોઈ ડિફોલ્ટ શ્લોક નહીં આવે.**")
+        st.markdown("**પ્રશ્ન ગુજરાતીમાં લખો**")
         st.success(f"✅ {len(shlokas)} શ્લોકો લોડ થયા. ગ્રાફમાં {G.number_of_edges()} સંબંધો.")
         
         user_query = st.text_area("તમારો પ્રશ્ન:", height=100, 
