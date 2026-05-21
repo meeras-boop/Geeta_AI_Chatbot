@@ -825,37 +825,35 @@ def main():
     
     # Display the selected page
     if st.session_state.mode == "question":
-        st.title("🕉️ ગીતા અધ્યાય 1 – જ્ઞાન ગ્રાફ")
-        st.markdown("**પ્રશ્ન ગુજરાતીમાં લખો – તમારી સમસ્યાનો ઉકેલ શ્લોકો દ્વારા મેળવો.**")
-        
-        user_query = st.text_area("તમારો પ્રશ્ન:", height=100, 
-                                  placeholder="ઉદા. 'હું ખૂબ મહેનત કરું છું છતાં પરિણામ સારાં આવતાં નથી. નિષ્ફળતાનો ડર મને છોડતો નથી.'")
-        
-        # Custom CSS to make this button light green (higher specificity)
+    st.title("🕉️ ગીતા અધ્યાય 1 – જ્ઞાન ગ્રાફ")
+    st.markdown("**પ્રશ્ન ગુજરાતીમાં લખો – તમારી સમસ્યાનો ઉકેલ શ્લોકો દ્વારા મેળવો.**")
+    
+    user_query = st.text_area("તમારો પ્રશ્ન:", height=100, 
+                              placeholder="ઉદા. 'હું ખૂબ મહેનત કરું છું છતાં પરિણામ સારાં આવતાં નથી. નિષ્ફળતાનો ડર મને છોડતો નથી.'")
+    
+    # Create a container with a unique key for targeting
+    with st.container():
+        # Inject CSS that targets ONLY the button inside this container
         st.markdown("""
         <style>
-            /* Override for the light green button */
-            div[data-testid="stVerticalBlock"] div:has(> div.light-green-btn) .stButton button,
-            .light-green-btn .stButton button {
+            /* Target the button inside the container with a unique parent selector */
+            div[data-testid="stVerticalBlock"] > div:has(> div.stButton) button {
                 background: #90EE90 !important;
                 background-image: none !important;
                 background-color: #90EE90 !important;
                 color: #1e3c72 !important;
-                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
                 border: none !important;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             }
-            div[data-testid="stVerticalBlock"] div:has(> div.light-green-btn) .stButton button:hover,
-            .light-green-btn .stButton button:hover {
+            div[data-testid="stVerticalBlock"] > div:has(> div.stButton) button:hover {
                 background: #76c76e !important;
                 transform: translateY(-1px);
                 box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             }
-            div[data-testid="stVerticalBlock"] div:has(> div.light-green-btn) .stButton button:active,
-            .light-green-btn .stButton button:active {
+            div[data-testid="stVerticalBlock"] > div:has(> div.stButton) button:active {
                 transform: translateY(1px);
             }
         </style>
-        <div class="light-green-btn">
         """, unsafe_allow_html=True)
         
         if st.button("🔍 શ્લોક શોધો", use_container_width=True):
@@ -875,8 +873,6 @@ def main():
                         st.markdown(f"**સંદર્ભ:** {sl.get('context_for_ml', '')}")
                         st.info(f"✨ {get_random_positive_sentence()}")
                         st.markdown("---")
-        
-        st.markdown("</div>", unsafe_allow_html=True)
     
     elif st.session_state.mode == "graph":
         st.title("🌐 જ્ઞાન ગ્રાફ – શ્લોકો વચ્ચેના સંબંધો")
