@@ -6,6 +6,7 @@ import networkx as nx
 import re
 import random
 from pyvis.network import Network
+
 # ============================================================
 # 1. Custom CSS for modern look
 # ============================================================
@@ -93,9 +94,9 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+
 # ============================================================
-# 1. Your full Chapter 1 data (47 shlokas) – paste exactly as provided
-#    (The full list is not repeated here for brevity; use your existing list.)
+# 2. Chapter 1 data (47 shlokas)
 # ============================================================
 CHAPTER_1_DATA = {
     "chapter_number": 1,
@@ -484,7 +485,7 @@ CHAPTER_1_DATA = {
 }
 
 # ------------------------------------------------------------
-# 2. Manual topics for each shloka (Gujarati)
+# 3. Manual topics for each shloka (Gujarati)
 # ------------------------------------------------------------
 TOPICS_MANUAL = {
     1: ["ધૃતરાષ્ટ્ર", "અજ્ઞાત પરિણામ", "ચિંતા"],
@@ -535,8 +536,9 @@ TOPICS_MANUAL = {
     46: ["આત્મસમર્પણ", "નિરાશા", "હાર માની લેવી"],
     47: ["હાર", "ધનુષ ત્યાગ", "સંપૂર્ણ નિરાશા"]
 }
+
 # ============================================================
-# 3. Cluster mapping (topic → colour + display name)
+# 4. Cluster mapping (topic → colour + display name)
 # ============================================================
 CLUSTER_MAP = {
     "યુદ્ધ/સેના/શૂરવીર": {
@@ -586,7 +588,7 @@ CLUSTER_MAP = {
 }
 
 # ============================================================
-# 4. Positive encouragement sentences (Gujarati)
+# 5. Positive encouragement sentences (Gujarati)
 # ============================================================
 POSITIVE_SENTENCES = [
     "🌟 આ શ્લોકો તમારા મનને શાંત કરવામાં અને સાચો માર્ગ બતાવવામાં સહાયક બનશે.",
@@ -605,7 +607,7 @@ def get_random_positive_sentence():
     return random.choice(POSITIVE_SENTENCES)
 
 # ============================================================
-# 5. Helper functions (normalize, tokenize, load, build graph)
+# 6. Helper functions (normalize, tokenize, load, build graph)
 # ============================================================
 def normalize_gujarati(word):
     return word[:4] if len(word) > 4 else word
@@ -674,7 +676,7 @@ def get_node_cluster(topics):
     return "અન્ય", "#CCCCCC", "અન્ય (Other)"
 
 # ============================================================
-# 6. Query processing functions
+# 7. Query processing functions
 # ============================================================
 def extract_query_topics(query):
     query_lower = query.lower()
@@ -765,7 +767,7 @@ def find_shlokas(query, G, shlokas, top_k=3):
         return [sl for sl in shlokas if sl['shloka_number'] in [26,35,28]][:top_k]
 
 # ============================================================
-# 7. Streamlit UI with exactly two buttons
+# 8. Streamlit UI with exactly two buttons
 # ============================================================
 def main():
     st.set_page_config(page_title="ગીતા અધ્યાય 1 – જ્ઞાન ગ્રાફ", page_icon="🕉️", layout="wide")
@@ -828,6 +830,29 @@ def main():
         
         user_query = st.text_area("તમારો પ્રશ્ન:", height=100, 
                                   placeholder="ઉદા. 'હું ખૂબ મહેનત કરું છું છતાં પરિણામ સારાં આવતાં નથી. નિષ્ફળતાનો ડર મને છોડતો નથી.'")
+        
+        # Custom CSS to make this button light green
+        st.markdown("""
+        <style>
+            .light-green-btn .stButton button {
+                background: #90EE90 !important;   /* light green */
+                background-image: none !important;
+                color: #1e3c72 !important;        /* dark blue text for contrast */
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                border: none;
+            }
+            .light-green-btn .stButton button:hover {
+                background: #76c76e !important;   /* slightly darker green on hover */
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }
+            .light-green-btn .stButton button:active {
+                transform: translateY(1px);
+            }
+        </style>
+        <div class="light-green-btn">
+        """, unsafe_allow_html=True)
+        
         if st.button("🔍 શ્લોક શોધો", use_container_width=True):
             if not user_query.strip():
                 st.warning("કૃપા કરી પ્રશ્ન લખો.")
@@ -845,6 +870,8 @@ def main():
                         st.markdown(f"**સંદર્ભ:** {sl.get('context_for_ml', '')}")
                         st.info(f"✨ {get_random_positive_sentence()}")
                         st.markdown("---")
+        
+        st.markdown("</div>", unsafe_allow_html=True)
     
     elif st.session_state.mode == "graph":
         st.title("🌐 જ્ઞાન ગ્રાફ – શ્લોકો વચ્ચેના સંબંધો")
