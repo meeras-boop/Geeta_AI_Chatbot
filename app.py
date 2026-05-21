@@ -6,7 +6,93 @@ import networkx as nx
 import re
 import random
 from pyvis.network import Network
-
+# ============================================================
+# 1. Custom CSS for modern look
+# ============================================================
+st.markdown("""
+<style>
+    /* Main app background – subtle gradient */
+    .stApp {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+    }
+    
+    /* Remove default top padding from main block */
+    .main .block-container {
+        padding-top: 1rem;
+        padding-bottom: 2rem;
+    }
+    
+    /* Button container – reduce width and center */
+    .stButton {
+        display: flex;
+        justify-content: center;
+    }
+    .stButton button {
+        width: 220px !important;
+        min-width: 180px;
+        padding: 0.6rem 1rem;
+        border-radius: 40px;
+        font-weight: 600;
+        font-size: 1rem;
+        background: linear-gradient(95deg, #1e3c72 0%, #2a5298 100%);
+        color: white;
+        border: none;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transition: all 0.25s ease;
+        margin: 0 auto;
+    }
+    .stButton button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+        background: linear-gradient(95deg, #2a5298 0%, #1e3c72 100%);
+        cursor: pointer;
+    }
+    .stButton button:active {
+        transform: translateY(1px);
+    }
+    
+    /* Cards / expanders / success box */
+    .stAlert, .stSuccess, .stInfo {
+        border-radius: 16px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .stExpander {
+        border-radius: 16px;
+        border: 1px solid #ddd;
+        margin-bottom: 12px;
+        background: white;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+    .stExpander:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    
+    /* Headers */
+    h1, h2, h3 {
+        font-family: 'Segoe UI', 'Gujarati', sans-serif;
+        color: #1e2a3e;
+    }
+    
+    /* Text area */
+    textarea {
+        border-radius: 16px !important;
+        border: 1px solid #ccc !important;
+        background: #ffffffcc !important;
+        backdrop-filter: blur(4px);
+    }
+    
+    /* Sidebar (if any, but we don't use it) – just in case */
+    section[data-testid="stSidebar"] {
+        background: #f8f9fa;
+    }
+    
+    /* Footer caption */
+    .stCaption {
+        text-align: center;
+        color: #6c757d;
+    }
+</style>
+""", unsafe_allow_html=True)
 # ============================================================
 # 1. Your full Chapter 1 data (47 shlokas) – paste exactly as provided
 #    (The full list is not repeated here for brevity; use your existing list.)
@@ -739,7 +825,6 @@ def main():
     if st.session_state.mode == "question":
         st.title("🕉️ ગીતા અધ્યાય 1 – જ્ઞાન ગ્રાફ")
         st.markdown("**પ્રશ્ન ગુજરાતીમાં લખો – તમારી સમસ્યાનો ઉકેલ શ્લોકો દ્વારા મેળવો.**")
-        st.success(f"✅ {len(shlokas)} શ્લોકો લોડ થયા. ગ્રાફમાં {G.number_of_edges()} સંબંધો.")
         
         user_query = st.text_area("તમારો પ્રશ્ન:", height=100, 
                                   placeholder="ઉદા. 'હું ખૂબ મહેનત કરું છું છતાં પરિણામ સારાં આવતાં નથી. નિષ્ફળતાનો ડર મને છોડતો નથી.'")
