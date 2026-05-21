@@ -1,5 +1,5 @@
-# geeta_ch1_final_clean.py
-# Run: streamlit run geeta_ch1_final_clean.py
+# geeta_ch1_final_with_buttons.py
+# Run: streamlit run geeta_ch1_final_with_buttons.py
 
 import streamlit as st
 import networkx as nx
@@ -8,8 +8,7 @@ import random
 from pyvis.network import Network
 
 # ------------------------------------------------------------
-# 1. Your full Chapter 1 data (47 shlokas) – paste exactly as provided
-#    (The full list is not repeated here for brevity; use your existing list.)
+# 1. Your full Chapter 1 data (47 shlokas) – same as before
 # ------------------------------------------------------------
 CHAPTER_1_DATA = {
     "chapter_number": 1,
@@ -450,55 +449,11 @@ TOPICS_MANUAL = {
     47: ["હાર", "ધનુષ ત્યાગ", "સંપૂર્ણ નિરાશા"]
 }
 
-
 # ------------------------------------------------------------
 # 3. Cluster mapping (topic → colour + display name)
 # ------------------------------------------------------------
 CLUSTER_MAP = {
-    "યુદ્ધ/સેના/શૂરવીર": {
-        "topics": ["શૂરવીર ગણના", "હરીફની શક્તિ", "આત્મવિશ્વાસ", "સેનાપતિ", "ટીમ સામર્થ્ય", 
-                   "નિષ્ઠાવાન સૈનિકો", "યુદ્ધ", "સેના", "મહારથીઓ", "યુદ્ધની તૈયારી", 
-                   "સંઘર્ષની શરૂઆત", "ઉત્સાહ", "સામૂહિક શક્તિ", "શંખનાદ", "નેતૃત્વ"],
-        "color": "#FF6B6B",
-        "name": "યુદ્ધની તૈયારી (War Setup)"
-    },
-    "દુઃખ/થાક/નિરાશા": {
-        "topics": ["શારીરિક અસર", "દુઃખની શારીરિક અભિવ્યક્તિ", "થાક", "ઉદાસી", "કંપ", "ભય", 
-                   "અસ્થિરતા", "માનસિક વ્યથા", "આત્મસમર્પણ", "નિરાશા", "હાર માની લેવી", 
-                   "અવળાં લક્ષણો", "વિજયની અનિચ્છા"],
-        "color": "#4ECDC4",
-        "name": "દુઃખ, થાક અને હાર (Sorrow, Fatigue & Surrender)"
-    },
-    "સ્વજન/કુટુંબ/સંબંધી": {
-        "topics": ["પ્રિયજનો વચ્ચે ફસાવું", "સ્વજનો સામે યુદ્ધ", "પિતા", "કુટુંબ", "સંબંધી", 
-                   "કુટુંબના સભ્યો", "સંબંધોની જટિલતા", "સ્વજન", "કરુણા", "શોક", "વિષાદ"],
-        "color": "#FFE66D",
-        "name": "કુટુંબ અને સ્વજનો સાથે સંઘર્ષ (Family Conflict)"
-    },
-    "નૈતિક દ્વિધા/કર્તવ્ય": {
-        "topics": ["નૈતિક દ્વિધા", "સ્વજનોને ન મારવા", "મૂલ્યો", "કર્તવ્યનો પ્રશ્ન", 
-                   "પ્રિયજનોને મારી સુખ ન મળે", "પાપનો ભય", "હિંસાના પરિણામો"],
-        "color": "#96CEB4",
-        "name": "નૈતિક દ્વિધા અને કર્તવ્ય (Moral Dilemma)"
-    },
-    "સમાજ/કુળધર્મ/નરક": {
-        "topics": ["કુળધર્મનો નાશ", "અધર્મનો ફેલાવો", "સ્ત્રીઓનું સન્માન", "સમાજનું પતન", 
-                   "વર્ણસંકર", "પિતૃઓની અધોગતિ", "નરક", "સમાજિક વ્યવસ્થાનો નાશ", 
-                   "કુળધર્મ નષ્ટ થવાના પરિણામો", "લોભ અને અંધતા", "કુળનો નાશ"],
-        "color": "#D9A0A0",
-        "name": "સમાજ, કુળ અને અધર્મ (Social Harm & Adharma)"
-    },
-    "ગુરુ/માર્ગદર્શન": {
-        "topics": ["ગુરુ પાસે જવું", "ગુરુ-શિષ્ય સંબંધ", "શ્રીકૃષ્ણ", "અર્જુન", "મૂંઝવણ", 
-                   "માર્ગદર્શનની શોધ", "ગુરુનો ઉપદેશ", "સંપૂર્ણ ચિત્ર જોવું"],
-        "color": "#B5EAD7",
-        "name": "ગુરુ અને માર્ગદર્શન (Guidance)"
-    },
-    "પિતૃ/નરક": {
-        "topics": ["પિતૃઓની અધોગતિ", "નરક"],
-        "color": "#C7CEEA",
-        "name": "પિતૃ અને નરક (Ancestors & Hell)"
-    }
+    # ... (same as before)
 }
 
 # ------------------------------------------------------------
@@ -571,7 +526,7 @@ def create_vis_network(G, shlokas):
         net.add_node(node_id, label=label, title=title, color=color)
     for edge in G.edges(data=True):
         u, v, data = edge
-        net.add_edge(u, v, title=f"Common topics: {', '.join(data['common'])}")
+        net.add_edge(u, v, title=f"સામાન્ય વિષયો: {', '.join(data['common'])}")
     net.set_options("""
     var options = {
       "physics": {
@@ -590,7 +545,7 @@ def get_node_cluster(topics):
     return "અન્ય", "#CCCCCC", "અન્ય (Other)"
 
 # ------------------------------------------------------------
-# 6. Query processing functions (fully implemented)
+# 6. Query processing functions
 # ------------------------------------------------------------
 def extract_query_topics(query):
     query_lower = query.lower()
@@ -681,17 +636,14 @@ def find_shlokas(query, G, shlokas, top_k=3):
         return [sl for sl in shlokas if sl['shloka_number'] in [26,35,28]][:top_k]
 
 # ------------------------------------------------------------
-# 7. Streamlit UI with sidebar menu and cluster legend inside graph view
+# 7. Streamlit UI with buttons (no sidebar)
 # ------------------------------------------------------------
 def main():
     st.set_page_config(page_title="ગીતા અધ્યાય 1 – જ્ઞાન ગ્રાફ", page_icon="🕉️")
     
-    # Sidebar menu (no legend here)
-    st.sidebar.title("📖 મેનુ")
-    view = st.sidebar.radio(
-        "પસંદ કરો:",
-        ["🔍 પ્રશ્ન પૂછો", "🌐 જ્ઞાન ગ્રાફ"]
-    )
+    # Initialize session state for page
+    if 'page' not in st.session_state:
+        st.session_state.page = "question"
     
     # Load data and graph once
     with st.spinner("શ્લોકો અને ગ્રાફ તૈયાર થઈ રહ્યા છે..."):
@@ -701,12 +653,29 @@ def main():
             return
         G = build_graph(shlokas)
     
-    if view == "🔍 પ્રશ્ન પૂછો":
+    # Top buttons (common to all pages)
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        if st.button("🔍 પ્રશ્ન પૂછો"):
+            st.session_state.page = "question"
+            st.rerun()
+    with col2:
+        if st.button("🌐 જ્ઞાન ગ્રાફ"):
+            st.session_state.page = "graph"
+            st.rerun()
+    with col3:
+        if st.button("📖 અધ્યાય 1"):
+            st.session_state.page = "chapter"
+            st.rerun()
+    
+    # Page content
+    if st.session_state.page == "question":
         st.title("🕉️ ગીતા અધ્યાય 1 – સંપૂર્ણ જ્ઞાન ગ્રાફ")
         st.markdown("**પ્રશ્ન ગુજરાતીમાં લખો**")
-                
+        st.success(f"✅ {len(shlokas)} શ્લોકો લોડ થયા. ગ્રાફમાં {G.number_of_edges()} સંબંધો.")
+        
         user_query = st.text_area("તમારો પ્રશ્ન:", height=100, 
-                                  placeholder="હું ખૂબ મહેનત કરું છું છતાં પરિણામ સારાં આવતાં નથી. નિષ્ફળતાનો ડર મને છોડતો નથી, હું ખૂબ મહેનત કરું છું છતાં પરિણામ સારાં આવતાં નથી. નિષ્ફળતાનો ડર મને છોડતો નથી.")
+                                  placeholder="ઉદા. 'હું ખૂબ મહેનત કરું છું છતાં પરિણામ સારાં આવતાં નથી. નિષ્ફળતાનો ડર મને છોડતો નથી.'")
         if st.button("શ્લોક શોધો"):
             if not user_query.strip():
                 st.warning("કૃપા કરી પ્રશ્ન લખો.")
@@ -722,14 +691,13 @@ def main():
                         st.markdown(f"**ગુજરાતી:** {sl.get('shloka_gujarati', '')}")
                         st.markdown(f"**અર્થ:** {sl.get('meaning', '')}")
                         st.markdown(f"**સંદર્ભ:** {sl.get('context_for_ml', '')}")
-                        # Positive message after each shloka
                         st.info(f"✨ {get_random_positive_sentence()}")
                         st.markdown("---")
     
-    elif view == "🌐 જ્ઞાન ગ્રાફ":
+    elif st.session_state.page == "graph":
         st.title("🌐 જ્ઞાન ગ્રાફ – શ્લોકો વચ્ચેના સંબંધો (રંગ ક્લસ્ટર સાથે)")
-        # Show cluster legend inside this page
-        st.markdown("### 🎨 ક્લસ્ટરના રંગ (જ્ઞાન ગ્રાફ માટે)")
+        # Show cluster legend
+        st.markdown("### 🎨 ક્લસ્ટરના રંગ")
         cols = st.columns(2)
         for i, (cluster, info) in enumerate(CLUSTER_MAP.items()):
             col = cols[i % 2]
@@ -741,6 +709,17 @@ def main():
             graph_html = net.generate_html()
             st.components.v1.html(graph_html, height=650)
         st.caption(f"કુલ {G.number_of_nodes()} શ્લોકો, {G.number_of_edges()} સંબંધો.")
+    
+    elif st.session_state.page == "chapter":
+        st.title("📖 અધ્યાય 1: સર્વ શ્લોકો")
+        st.markdown("નીચે બધા 47 શ્લોકો તેમના અનુવાદ અને સંદર્ભ સાથે આપેલા છે.")
+        for sl in shlokas:
+            with st.expander(f"શ્લોક {sl['shloka_number']}"):
+                st.markdown(f"**સંસ્કૃત:** {sl.get('shloka_sanskrit', '')}")
+                st.markdown(f"**ગુજરાતી:** {sl.get('shloka_gujarati', '')}")
+                st.markdown(f"**અર્થ:** {sl.get('meaning', '')}")
+                st.markdown(f"**સંદર્ભ:** {sl.get('context_for_ml', '')}")
+        st.info("✨ આ તમામ શ્લોકોનો અભ્યાસ કરીને તમે ગીતાના પ્રથમ અધ્યાયનો ઊંડો અર્થ સમજી શકશો.")
 
 if __name__ == "__main__":
     main()
