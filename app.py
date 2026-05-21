@@ -1,3 +1,6 @@
+# geeta_ch1_final_two_buttons.py
+# Run: streamlit run geeta_ch1_final_two_buttons.py
+
 import streamlit as st
 import networkx as nx
 import re
@@ -20,10 +23,33 @@ st.markdown("""
         padding-bottom: 2rem;
     }
     
-    /* Base button container – no default styling anymore */
+    /* Default button styling (blue gradient) */
     .stButton {
         display: flex;
         justify-content: center;
+    }
+    .stButton button {
+        width: 220px !important;
+        min-width: 180px;
+        padding: 0.6rem 1rem;
+        border-radius: 40px;
+        font-weight: 600;
+        font-size: 1rem;
+        background: linear-gradient(95deg, #1e3c72 0%, #2a5298 100%);
+        color: white;
+        border: none;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transition: all 0.25s ease;
+        margin: 0 auto;
+    }
+    .stButton button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+        background: linear-gradient(95deg, #2a5298 0%, #1e3c72 100%);
+        cursor: pointer;
+    }
+    .stButton button:active {
+        transform: translateY(1px);
     }
     
     /* Cards / expanders / success box */
@@ -68,6 +94,7 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+
 # ============================================================
 # 2. Chapter 1 data (47 shlokas)
 # ============================================================
@@ -742,64 +769,27 @@ def find_shlokas(query, G, shlokas, top_k=3):
 # ============================================================
 # 8. Streamlit UI with exactly two buttons
 # ============================================================
-# ============================================================
-# 4. Main app with custom button classes
-# ============================================================
 def main():
     st.set_page_config(page_title="ગીતા અધ્યાય 1 – જ્ઞાન ગ્રાફ", page_icon="🕉️", layout="wide")
     
-    # Inject global CSS for the two button styles
+    # Custom CSS for better look (buttons already styled globally)
     st.markdown("""
     <style>
-        /* Blue button style (for the two top buttons) */
-        .blue-btn .stButton button {
-            width: 220px !important;
-            min-width: 180px;
-            padding: 0.6rem 1rem;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 1rem;
-            background: linear-gradient(95deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            border: none;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            transition: all 0.25s ease;
-            margin: 0 auto;
-        }
-        .blue-btn .stButton button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 18px rgba(0,0,0,0.15);
-            background: linear-gradient(95deg, #2a5298 0%, #1e3c72 100%);
-            cursor: pointer;
-        }
-        .blue-btn .stButton button:active {
-            transform: translateY(1px);
-        }
-        
-        /* Light green button style (for search button) */
-        .green-search-btn .stButton button {
-            width: 220px !important;
-            min-width: 180px;
-            padding: 0.6rem 1rem;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 1rem;
-            background: #90EE90 !important;
-            background-image: none !important;
-            color: #1e3c72 !important;
-            border: none;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            transition: all 0.25s ease;
-            margin: 0 auto;
-        }
-        .green-search-btn .stButton button:hover {
-            transform: translateY(-1px);
-            background: #76c76e !important;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        .green-search-btn .stButton button:active {
-            transform: translateY(1px);
-        }
+    .stButton button {
+        width: 100%;
+        border-radius: 8px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    .stButton button:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .stExpander {
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
     </style>
     """, unsafe_allow_html=True)
     
@@ -807,29 +797,23 @@ def main():
     if 'mode' not in st.session_state:
         st.session_state.mode = "question"
     
-    # Two buttons in a row – each wrapped in its own class container
+    # Two buttons in a row
     col1, col2 = st.columns(2)
     with col1:
-        with st.container():
-            st.markdown('<div class="blue-btn">', unsafe_allow_html=True)
-            if st.button("📖 અધ્યાય 1", use_container_width=True):
-                st.session_state.mode = "chapter"
-                st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
+        if st.button("📖 અધ્યાય 1", use_container_width=True):
+            st.session_state.mode = "chapter"
+            st.rerun()
     with col2:
-        with st.container():
-            st.markdown('<div class="blue-btn">', unsafe_allow_html=True)
+        if st.session_state.mode == "question":
+            btn_label = "🌐 જ્ઞાન ગ્રાફ"
+        else:
+            btn_label = "🔍 પ્રશ્ન પૂછો"
+        if st.button(btn_label, use_container_width=True):
             if st.session_state.mode == "question":
-                btn_label = "🌐 જ્ઞાન ગ્રાફ"
+                st.session_state.mode = "graph"
             else:
-                btn_label = "🔍 પ્રશ્ન પૂછો"
-            if st.button(btn_label, use_container_width=True):
-                if st.session_state.mode == "question":
-                    st.session_state.mode = "graph"
-                else:
-                    st.session_state.mode = "question"
-                st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
+                st.session_state.mode = "question"
+            st.rerun()
     
     # Load data and graph once
     with st.spinner("શ્લોકો અને ગ્રાફ તૈયાર થઈ રહ્યા છે..."):
@@ -847,27 +831,52 @@ def main():
         user_query = st.text_area("તમારો પ્રશ્ન:", height=100, 
                                   placeholder="ઉદા. 'હું ખૂબ મહેનત કરું છું છતાં પરિણામ સારાં આવતાં નથી. નિષ્ફળતાનો ડર મને છોડતો નથી.'")
         
-        # Search button with its own green class
-        with st.container():
-            st.markdown('<div class="green-search-btn">', unsafe_allow_html=True)
-            if st.button("🔍 શ્લોક શોધો", use_container_width=True):
-                if not user_query.strip():
-                    st.warning("કૃપા કરી પ્રશ્ન લખો.")
+        # Custom CSS to make this button light green (higher specificity)
+        st.markdown("""
+        <style>
+            /* Override for the light green button */
+            div[data-testid="stVerticalBlock"] div:has(> div.light-green-btn) .stButton button,
+            .light-green-btn .stButton button {
+                background: #90EE90 !important;
+                background-image: none !important;
+                background-color: #90EE90 !important;
+                color: #1e3c72 !important;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                border: none !important;
+            }
+            div[data-testid="stVerticalBlock"] div:has(> div.light-green-btn) .stButton button:hover,
+            .light-green-btn .stButton button:hover {
+                background: #76c76e !important;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }
+            div[data-testid="stVerticalBlock"] div:has(> div.light-green-btn) .stButton button:active,
+            .light-green-btn .stButton button:active {
+                transform: translateY(1px);
+            }
+        </style>
+        <div class="light-green-btn">
+        """, unsafe_allow_html=True)
+        
+        if st.button("🔍 શ્લોક શોધો", use_container_width=True):
+            if not user_query.strip():
+                st.warning("કૃપા કરી પ્રશ્ન લખો.")
+            else:
+                result_shlokas = find_shlokas(user_query, G, shlokas, top_k=3)
+                if not result_shlokas:
+                    st.warning("કોઈ સંબંધિત શ્લોક મળ્યો નહીં. કૃપા કરી બીજા શબ્દોમાં પ્રયત્ન કરો.")
                 else:
-                    result_shlokas = find_shlokas(user_query, G, shlokas, top_k=3)
-                    if not result_shlokas:
-                        st.warning("કોઈ સંબંધિત શ્લોક મળ્યો નહીં. કૃપા કરી બીજા શબ્દોમાં પ્રયત્ન કરો.")
-                    else:
-                        st.subheader("🔗 સંબંધિત શ્લોકો:")
-                        for sl in result_shlokas:
-                            st.markdown(f"### અધ્યાય {sl['chapter_number']}, શ્લોક {sl['shloka_number']}")
-                            st.markdown(f"**સંસ્કૃત:** {sl.get('shloka_sanskrit', '')}")
-                            st.markdown(f"**ગુજરાતી:** {sl.get('shloka_gujarati', '')}")
-                            st.markdown(f"**અર્થ:** {sl.get('meaning', '')}")
-                            st.markdown(f"**સંદર્ભ:** {sl.get('context_for_ml', '')}")
-                            st.info(f"✨ {get_random_positive_sentence()}")
-                            st.markdown("---")
-            st.markdown('</div>', unsafe_allow_html=True)
+                    st.subheader("🔗 સંબંધિત શ્લોકો:")
+                    for sl in result_shlokas:
+                        st.markdown(f"### અધ્યાય {sl['chapter_number']}, શ્લોક {sl['shloka_number']}")
+                        st.markdown(f"**સંસ્કૃત:** {sl.get('shloka_sanskrit', '')}")
+                        st.markdown(f"**ગુજરાતી:** {sl.get('shloka_gujarati', '')}")
+                        st.markdown(f"**અર્થ:** {sl.get('meaning', '')}")
+                        st.markdown(f"**સંદર્ભ:** {sl.get('context_for_ml', '')}")
+                        st.info(f"✨ {get_random_positive_sentence()}")
+                        st.markdown("---")
+        
+        st.markdown("</div>", unsafe_allow_html=True)
     
     elif st.session_state.mode == "graph":
         st.title("🌐 જ્ઞાન ગ્રાફ – શ્લોકો વચ્ચેના સંબંધો")
