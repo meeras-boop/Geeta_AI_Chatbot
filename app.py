@@ -1,5 +1,5 @@
-# geeta_ch1_final_with_buttons.py
-# Run: streamlit run geeta_ch1_final_with_buttons.py
+# geeta_ch1_final_two_buttons.py
+# Run: streamlit run geeta_ch1_final_two_buttons.py
 
 import streamlit as st
 import networkx as nx
@@ -7,9 +7,10 @@ import re
 import random
 from pyvis.network import Network
 
-# ------------------------------------------------------------
-# 1. Your full Chapter 1 data (47 shlokas) – same as before
-# ------------------------------------------------------------
+# ============================================================
+# 1. Your full Chapter 1 data (47 shlokas) – paste exactly as provided
+#    (The full list is not repeated here for brevity; use your existing list.)
+# ============================================================
 CHAPTER_1_DATA = {
     "chapter_number": 1,
     "chapter_name": "અર્જુનવિષાદ યોગ",
@@ -448,17 +449,59 @@ TOPICS_MANUAL = {
     46: ["આત્મસમર્પણ", "નિરાશા", "હાર માની લેવી"],
     47: ["હાર", "ધનુષ ત્યાગ", "સંપૂર્ણ નિરાશા"]
 }
-
-# ------------------------------------------------------------
+# ============================================================
 # 3. Cluster mapping (topic → colour + display name)
-# ------------------------------------------------------------
+# ============================================================
 CLUSTER_MAP = {
-    # ... (same as before)
+    "યુદ્ધ/સેના/શૂરવીર": {
+        "topics": ["શૂરવીર ગણના", "હરીફની શક્તિ", "આત્મવિશ્વાસ", "સેનાપતિ", "ટીમ સામર્થ્ય", 
+                   "નિષ્ઠાવાન સૈનિકો", "યુદ્ધ", "સેના", "મહારથીઓ", "યુદ્ધની તૈયારી", 
+                   "સંઘર્ષની શરૂઆત", "ઉત્સાહ", "સામૂહિક શક્તિ", "શંખનાદ", "નેતૃત્વ"],
+        "color": "#FF6B6B",
+        "name": "યુદ્ધની તૈયારી (War Setup)"
+    },
+    "દુઃખ/થાક/નિરાશા": {
+        "topics": ["શારીરિક અસર", "દુઃખની શારીરિક અભિવ્યક્તિ", "થાક", "ઉદાસી", "કંપ", "ભય", 
+                   "અસ્થિરતા", "માનસિક વ્યથા", "આત્મસમર્પણ", "નિરાશા", "હાર માની લેવી", 
+                   "અવળાં લક્ષણો", "વિજયની અનિચ્છા"],
+        "color": "#4ECDC4",
+        "name": "દુઃખ, થાક અને હાર (Sorrow, Fatigue & Surrender)"
+    },
+    "સ્વજન/કુટુંબ/સંબંધી": {
+        "topics": ["પ્રિયજનો વચ્ચે ફસાવું", "સ્વજનો સામે યુદ્ધ", "પિતા", "કુટુંબ", "સંબંધી", 
+                   "કુટુંબના સભ્યો", "સંબંધોની જટિલતા", "સ્વજન", "કરુણા", "શોક", "વિષાદ"],
+        "color": "#FFE66D",
+        "name": "કુટુંબ અને સ્વજનો સાથે સંઘર્ષ (Family Conflict)"
+    },
+    "નૈતિક દ્વિધા/કર્તવ્ય": {
+        "topics": ["નૈતિક દ્વિધા", "સ્વજનોને ન મારવા", "મૂલ્યો", "કર્તવ્યનો પ્રશ્ન", 
+                   "પ્રિયજનોને મારી સુખ ન મળે", "પાપનો ભય", "હિંસાના પરિણામો"],
+        "color": "#96CEB4",
+        "name": "નૈતિક દ્વિધા અને કર્તવ્ય (Moral Dilemma)"
+    },
+    "સમાજ/કુળધર્મ/નરક": {
+        "topics": ["કુળધર્મનો નાશ", "અધર્મનો ફેલાવો", "સ્ત્રીઓનું સન્માન", "સમાજનું પતન", 
+                   "વર્ણસંકર", "પિતૃઓની અધોગતિ", "નરક", "સમાજિક વ્યવસ્થાનો નાશ", 
+                   "કુળધર્મ નષ્ટ થવાના પરિણામો", "લોભ અને અંધતા", "કુળનો નાશ"],
+        "color": "#D9A0A0",
+        "name": "સમાજ, કુળ અને અધર્મ (Social Harm & Adharma)"
+    },
+    "ગુરુ/માર્ગદર્શન": {
+        "topics": ["ગુરુ પાસે જવું", "ગુરુ-શિષ્ય સંબંધ", "શ્રીકૃષ્ણ", "અર્જુન", "મૂંઝવણ", 
+                   "માર્ગદર્શનની શોધ", "ગુરુનો ઉપદેશ", "સંપૂર્ણ ચિત્ર જોવું"],
+        "color": "#B5EAD7",
+        "name": "ગુરુ અને માર્ગદર્શન (Guidance)"
+    },
+    "પિતૃ/નરક": {
+        "topics": ["પિતૃઓની અધોગતિ", "નરક"],
+        "color": "#C7CEEA",
+        "name": "પિતૃ અને નરક (Ancestors & Hell)"
+    }
 }
 
-# ------------------------------------------------------------
+# ============================================================
 # 4. Positive encouragement sentences (Gujarati)
-# ------------------------------------------------------------
+# ============================================================
 POSITIVE_SENTENCES = [
     "🌟 આ શ્લોકો તમારા મનને શાંત કરવામાં અને સાચો માર્ગ બતાવવામાં સહાયક બનશે.",
     "💪 ગીતાના આ ઉપદેશો તમારામાં નવી ઊર્જા અને આત્મવિશ્વાસ ભરશે.",
@@ -475,9 +518,9 @@ POSITIVE_SENTENCES = [
 def get_random_positive_sentence():
     return random.choice(POSITIVE_SENTENCES)
 
-# ------------------------------------------------------------
+# ============================================================
 # 5. Helper functions (normalize, tokenize, load, build graph)
-# ------------------------------------------------------------
+# ============================================================
 def normalize_gujarati(word):
     return word[:4] if len(word) > 4 else word
 
@@ -544,9 +587,9 @@ def get_node_cluster(topics):
             return cluster, info["color"], info["name"]
     return "અન્ય", "#CCCCCC", "અન્ય (Other)"
 
-# ------------------------------------------------------------
+# ============================================================
 # 6. Query processing functions
-# ------------------------------------------------------------
+# ============================================================
 def extract_query_topics(query):
     query_lower = query.lower()
     topics = set()
@@ -635,15 +678,54 @@ def find_shlokas(query, G, shlokas, top_k=3):
     else:
         return [sl for sl in shlokas if sl['shloka_number'] in [26,35,28]][:top_k]
 
-# ------------------------------------------------------------
-# 7. Streamlit UI with buttons (no sidebar)
-# ------------------------------------------------------------
+# ============================================================
+# 7. Streamlit UI with exactly two buttons
+# ============================================================
 def main():
-    st.set_page_config(page_title="ગીતા અધ્યાય 1 – જ્ઞાન ગ્રાફ", page_icon="🕉️")
+    st.set_page_config(page_title="ગીતા અધ્યાય 1 – જ્ઞાન ગ્રાફ", page_icon="🕉️", layout="wide")
     
-    # Initialize session state for page
-    if 'page' not in st.session_state:
-        st.session_state.page = "question"
+    # Custom CSS for better look
+    st.markdown("""
+    <style>
+    .stButton button {
+        width: 100%;
+        border-radius: 8px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    .stButton button:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .stExpander {
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # Initialize session state
+    if 'mode' not in st.session_state:
+        st.session_state.mode = "question"
+    
+    # Two buttons in a row
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("📖 અધ્યાય 1", use_container_width=True):
+            st.session_state.mode = "chapter"
+            st.rerun()
+    with col2:
+        if st.session_state.mode == "question":
+            btn_label = "🌐 જ્ઞાન ગ્રાફ"
+        else:
+            btn_label = "🔍 પ્રશ્ન પૂછો"
+        if st.button(btn_label, use_container_width=True):
+            if st.session_state.mode == "question":
+                st.session_state.mode = "graph"
+            else:
+                st.session_state.mode = "question"
+            st.rerun()
     
     # Load data and graph once
     with st.spinner("શ્લોકો અને ગ્રાફ તૈયાર થઈ રહ્યા છે..."):
@@ -653,36 +735,21 @@ def main():
             return
         G = build_graph(shlokas)
     
-    # Top buttons (common to all pages)
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        if st.button("🔍 પ્રશ્ન પૂછો"):
-            st.session_state.page = "question"
-            st.rerun()
-    with col2:
-        if st.button("🌐 જ્ઞાન ગ્રાફ"):
-            st.session_state.page = "graph"
-            st.rerun()
-    with col3:
-        if st.button("📖 અધ્યાય 1"):
-            st.session_state.page = "chapter"
-            st.rerun()
-    
-    # Page content
-    if st.session_state.page == "question":
-        st.title("🕉️ ગીતા અધ્યાય 1 – સંપૂર્ણ જ્ઞાન ગ્રાફ")
-        st.markdown("**પ્રશ્ન ગુજરાતીમાં લખો**")
+    # Display the selected page
+    if st.session_state.mode == "question":
+        st.title("🕉️ ગીતા અધ્યાય 1 – જ્ઞાન ગ્રાફ")
+        st.markdown("**પ્રશ્ન ગુજરાતીમાં લખો – તમારી સમસ્યાનો ઉકેલ શ્લોકો દ્વારા મેળવો.**")
         st.success(f"✅ {len(shlokas)} શ્લોકો લોડ થયા. ગ્રાફમાં {G.number_of_edges()} સંબંધો.")
         
         user_query = st.text_area("તમારો પ્રશ્ન:", height=100, 
                                   placeholder="ઉદા. 'હું ખૂબ મહેનત કરું છું છતાં પરિણામ સારાં આવતાં નથી. નિષ્ફળતાનો ડર મને છોડતો નથી.'")
-        if st.button("શ્લોક શોધો"):
+        if st.button("🔍 શ્લોક શોધો", use_container_width=True):
             if not user_query.strip():
                 st.warning("કૃપા કરી પ્રશ્ન લખો.")
             else:
                 result_shlokas = find_shlokas(user_query, G, shlokas, top_k=3)
                 if not result_shlokas:
-                    st.warning("કોઈ સંબંધિત શ્લોક મળ્યો નહીં.")
+                    st.warning("કોઈ સંબંધિત શ્લોક મળ્યો નહીં. કૃપા કરી બીજા શબ્દોમાં પ્રયત્ન કરો.")
                 else:
                     st.subheader("🔗 સંબંધિત શ્લોકો:")
                     for sl in result_shlokas:
@@ -694,8 +761,8 @@ def main():
                         st.info(f"✨ {get_random_positive_sentence()}")
                         st.markdown("---")
     
-    elif st.session_state.page == "graph":
-        st.title("🌐 જ્ઞાન ગ્રાફ – શ્લોકો વચ્ચેના સંબંધો (રંગ ક્લસ્ટર સાથે)")
+    elif st.session_state.mode == "graph":
+        st.title("🌐 જ્ઞાન ગ્રાફ – શ્લોકો વચ્ચેના સંબંધો")
         # Show cluster legend
         st.markdown("### 🎨 ક્લસ્ટરના રંગ")
         cols = st.columns(2)
@@ -710,9 +777,9 @@ def main():
             st.components.v1.html(graph_html, height=650)
         st.caption(f"કુલ {G.number_of_nodes()} શ્લોકો, {G.number_of_edges()} સંબંધો.")
     
-    elif st.session_state.page == "chapter":
-        st.title("📖 અધ્યાય 1: સર્વ શ્લોકો")
-        st.markdown("નીચે બધા 47 શ્લોકો તેમના અનુવાદ અને સંદર્ભ સાથે આપેલા છે.")
+    elif st.session_state.mode == "chapter":
+        st.title("📖 અધ્યાય 1 – સર્વ શ્લોકો")
+        st.markdown("નીચે બધા 47 શ્લોકો તેમના સંસ્કૃત પાઠ, ગુજરાતી અનુવાદ, અર્થ અને સંદર્ભ સાથે આપેલા છે.")
         for sl in shlokas:
             with st.expander(f"શ્લોક {sl['shloka_number']}"):
                 st.markdown(f"**સંસ્કૃત:** {sl.get('shloka_sanskrit', '')}")
