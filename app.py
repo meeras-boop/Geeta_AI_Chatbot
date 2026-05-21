@@ -8,7 +8,7 @@ import random
 from pyvis.network import Network
 
 # ============================================================
-# 1. Custom CSS for modern look
+# 1. Custom CSS for modern look (global)
 # ============================================================
 st.markdown("""
 <style>
@@ -23,7 +23,7 @@ st.markdown("""
         padding-bottom: 2rem;
     }
     
-    /* Button container – reduce width and center */
+    /* Default button styling (blue gradient) */
     .stButton {
         display: flex;
         justify-content: center;
@@ -772,7 +772,7 @@ def find_shlokas(query, G, shlokas, top_k=3):
 def main():
     st.set_page_config(page_title="ગીતા અધ્યાય 1 – જ્ઞાન ગ્રાફ", page_icon="🕉️", layout="wide")
     
-    # Custom CSS for better look
+    # Custom CSS for better look (buttons already styled globally)
     st.markdown("""
     <style>
     .stButton button {
@@ -831,21 +831,26 @@ def main():
         user_query = st.text_area("તમારો પ્રશ્ન:", height=100, 
                                   placeholder="ઉદા. 'હું ખૂબ મહેનત કરું છું છતાં પરિણામ સારાં આવતાં નથી. નિષ્ફળતાનો ડર મને છોડતો નથી.'")
         
-        # Custom CSS to make this button light green
+        # Custom CSS to make this button light green (higher specificity)
         st.markdown("""
         <style>
+            /* Override for the light green button */
+            div[data-testid="stVerticalBlock"] div:has(> div.light-green-btn) .stButton button,
             .light-green-btn .stButton button {
-                background: #90EE90 !important;   /* light green */
+                background: #90EE90 !important;
                 background-image: none !important;
-                color: #1e3c72 !important;        /* dark blue text for contrast */
+                background-color: #90EE90 !important;
+                color: #1e3c72 !important;
                 box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-                border: none;
+                border: none !important;
             }
+            div[data-testid="stVerticalBlock"] div:has(> div.light-green-btn) .stButton button:hover,
             .light-green-btn .stButton button:hover {
-                background: #76c76e !important;   /* slightly darker green on hover */
+                background: #76c76e !important;
                 transform: translateY(-1px);
                 box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             }
+            div[data-testid="stVerticalBlock"] div:has(> div.light-green-btn) .stButton button:active,
             .light-green-btn .stButton button:active {
                 transform: translateY(1px);
             }
